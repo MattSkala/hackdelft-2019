@@ -8,8 +8,9 @@ contract conditionalTokens {
     }
 
     struct Claim{
+        uint8 exists;
         address company;
-        uint256 priceLimit;
+        uint256 budget;
         string city;
         uint startTime;
         uint endTime;
@@ -25,19 +26,27 @@ contract conditionalTokens {
     struct ServiceProvider{
         uint exists;
         string name;
-        string location;
+        string city;
     }
 
     mapping(address=>Company) public allCompanies;
-    mapping(address=>Employee) public allEmployee;
+    mapping(address=>Employee) public allEmployees;
     mapping(address=>address[]) public companyEmployees;
     mapping(address=>ServiceProvider) public allServiceProviders;
-    mapping(address=>Claim) public allTrips;
+    mapping(address=>Claim) public allClaims;
 
     function addCompany(string memory name) public payable{
         require(allCompanies[msg.sender].exists!=1);
         Company memory newCompany = Company(1, msg.value, name);
         allCompanies[msg.sender] = newCompany;
+    }
+
+    function addEmployee(address employeeAddress, string memory name, string memory homeCity) public{
+        require(allCompanies[msg.sender].exists==1);
+        require(allEmployees[employeeAddress].exists!=1);
+        Employee memory newEmployee = Employee(1, name, homeCity, msg.sender);
+        allEmployees[employeeAddress] = newEmployee;
+        companyEmployees[msg.sender].push(employeeAddress);
     }
 
     function refillAccount() public payable{
@@ -50,24 +59,29 @@ contract conditionalTokens {
         ServiceProvider memory newServiceProvider = ServiceProvider(1,name,location);
         allServiceProviders[msg.sender] = newServiceProvider;
     }
-    
-    function startTrip(address emp_addr, string memory city, uint256 priceLimit, uint startTime, uint endTime) public {
+
+    function addClaim(address employeeAddress, string memory city, uint256 priceLimit, uint startTime, uint endTime) public {
         require(allCompanies[msg.sender].exists==1);
-        require(allEmployee[emp_addr].exists==1);
-        Claim memory newClaim = Claim(msg.sender, priceLimit, city, startTime, endTime);
-        allTrips[emp_addr] = newClaim;
+        require(allEmployees[employeeAddress].exists==1);
+        Claim memory newClaim = Claim(1, msg.sender, priceLimit, city, startTime, endTime);
+        allClaims[employeeAddress] = newClaim;
     }
-   /*
-    function addEmployee();
-    
-    function payServiceProvider();
-    function endTrip();
-    function claimAccount();
 
-    //Other Functions
-    function getEmployees();
-    function getBalance();
-    */
+    function payServiceProvider(address payable serviceProvider, uint amount) public {
+        require(allClaims[msg.sender].exists==1);
+        require(allClaims[msg.sender].startTime<now && allClaims[msg.sender].endTime>now);
+        require(allServiceProviders[serviceProvider].exists==1);
+        require(!strCmp(allClaims[msg.sender].city, allEmployees[msg.sender].homeCity) && strCmp(allClaims[msg.sender].city, allServiceProviders[serviceProvider].city));
+        require(allClaims[msg.sender].budget>amount);
+        serviceProvider.transfer(amount);
+    }
 
+    function strCmp(string memory a, string memory b) internal pure returns (bool) {
+    if(bytes(a).length != bytes(b).length) {
+        return false;
+    } else {
+        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
+    }
 }
 
+}
