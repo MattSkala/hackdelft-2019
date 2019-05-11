@@ -47,6 +47,12 @@
               <p>Add Employee</p>
             </a>
           </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="add-claim.html">
+              <i class="material-icons">work</i>
+              <p>Allocate Budget</p>
+            </a>
+          </li>
           <!--li class="nav-item ">
             <a class="nav-link" href="#0">
               <i class="material-icons">location_ons</i>
@@ -83,7 +89,7 @@
                       <i class="material-icons">attach_money</i>
                     </div>
                     <p class="card-category">Balance</p>
-                    <h3 class="card-title">$0
+                    <h3 class="card-title" id="balance">$0
                     </h3>
                   </div>
                   <div class="card-footer">
@@ -101,13 +107,13 @@
                       <i class="material-icons">attach_money</i>
                     </div>
                     <p class="card-category">Allocated</p>
-                    <h3 class="card-title">$0
+                    <h3 class="card-title" id="claims_amount">$0
                     </h3>
                   </div>
                   <div class="card-footer">
                     <div class="stats">
                       <i class="material-icons">library_books</i>
-                      <a href="#pablo">Show Allocations</a>
+                      <a href="#allocations">Show Allocations</a>
                     </div>
                   </div>
                 </div>
@@ -118,14 +124,14 @@
                     <div class="card-icon">
                       <i class="material-icons">attach_money</i>
                     </div>
-                    <p class="card-category">Spent</p>
+                    <p class="card-category" id="spent_amount">Spent</p>
                     <h3 class="card-title">$0
                     </h3>
                   </div>
                   <div class="card-footer">
                     <div class="stats">
                       <i class="material-icons">library_books</i>
-                      <a href="#pablo">Show Transactions</a>
+                      <a href="#transactions">Show Transactions</a>
                     </div>
                   </div>
                 </div>
@@ -137,12 +143,12 @@
                       <i class="material-icons">person</i>
                     </div>
                     <p class="card-category">Employees</p>
-                    <h3 class="card-title">0</h3>
+                    <h3 class="card-title" id="employees_count">0</h3>
                   </div>
                   <div class="card-footer">
                       <div class="stats">
                           <i class="material-icons">library_books</i>
-                          <a href="#pablo">Show List</a>
+                          <a href="#employees">Show List</a>
                         </div>
                   </div>
                 </div>
@@ -171,58 +177,66 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-warning">
-                    <h4 class="card-title">Budget Allocations</h4>
-                    <p class="card-category">All employees in 2019</p>
+                    <h4 class="card-title" id="allocations">Budget Allocations</h4>                    
                   </div>
                   <div class="card-body table-responsive">
                     <table class="table table-hover">
-                      <thead class="text-warning">
-                        <th>ID</th>
-                        <th>Name</th>
+                      <thead class="text-warning">                        
+                        <th>Employee</th>
                         <th>Budget</th>
                         <th>City</th>
                         <th>Start</th>
                         <th>End</th>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Dakota Rice</td>
-                          <td>$36,738</td>
-                          <td>Niger</td>
-                          <td>1/1/2019</td>
-                          <td>10/1/2019</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Minerva Hooper</td>
-                          <td>$23,789</td>
-                          <td>Curaçao</td>
-                          <td>1/1/2019</td>
-                          <td>10/1/2019</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Sage Rodriguez</td>
-                          <td>$56,142</td>
-                          <td>Netherlands</td>
-                          <td>1/1/2019</td>
-                          <td>10/1/2019</td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>Philip Chaney</td>
-                          <td>$38,735</td>
-                          <td>Korea, South</td>
-                          <td>1/1/2019</td>
-                          <td>10/1/2019</td>
-                        </tr>
+                      <tbody id="table_claims">                        
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-warning">
+                      <h4 class="card-title" id="allocations">Transactions</h4>
+                    </div>
+                    <div class="card-body table-responsive">
+                      <table class="table table-hover">
+                        <thead class="text-warning">                        
+                          <th>Employee</th>
+                          <th>Amount</th>
+                          <th>Service Provider</th>
+                          <th>City</th>
+                          <th>Date</th>
+                        </thead>
+                        <tbody id="table_transfers">                        
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-warning">
+                      <h4 class="card-title" id="employees">Employees</h4>                      
+                    </div>
+                    <div class="card-body table-responsive">
+                      <table class="table table-hover">
+                        <thead class="text-warning">                                                    
+                          <th>Name</th>                          
+                          <th>City</th>                          
+                          <th>Address</th>                   
+                        </thead>
+                        <tbody id="table_employees">                         
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
     </div>
@@ -231,6 +245,7 @@
   <script src="assets/js/core/jquery.min.js"></script>
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
@@ -240,14 +255,96 @@
   </script>
 
   <script>
-      function onWeb3Initialized(){
+    function appendRow(table, data) {
+      tr = document.createElement('tr')
+      data.forEach(item => {
+        td = document.createElement('td')
+        td.appendChild(document.createTextNode(item))
+        tr.appendChild(td)
+      })
+      table.appendChild(tr)
+    }
+
+    async function updateBalanceStats() {
+      App.get_balance(function (err, balance) {
+        console.log('balance: ', balance)
+        document.getElementById('balance').textContent = formatPrice(balance)
+      })      
+    }
+
+    function updateClaimsStats(claims) {
+      claims = claims.map(claim => claim['args']['budget']['c'][0])      
+      console.log('updateClaims', claims)
+      sum = claims.reduce((total, claim) => total + num);
+      console.log('sum', sum)
+      document.getElementById('claims_amount').textContent = formatPrice(sum)
+    }
+
+      async function onWeb3Initialized(){
+        await updateBalanceStats()
+
         console.log("Web3");
+
+        console.log('account: ' + App.account)
+        employees = await App.getEmployees()
+        employees = await Promise.all(employees.map(async function (employee) {
+          console.log(employee)
+          return await App.allEmployees(employee)
+        }))
+
+        console.log(employees)
+
+        employees.forEach(employee => {
+          table = document.getElementById('table_employees')
+          appendRow(table, [employee[1], employee[2], employee[3]])          
+          console.log(table)
+        })        
+
+        console.log('#employees: ' + employees.length)
+        document.getElementById('employees_count').textContent = employees.length
+
+        claims = []
+        transfers = []
+
+        Events.listenClaim(App.account, function (claim) {
+          console.log('claim', claim)
+          claims.push(claim)
+          table = document.getElementById('table_claims')
+          args = claim['args']
+          row = [
+            args['employeeAddress'], 
+            args['budget']['c'][0], 
+            args['city'], 
+            moment.unix(args['startTime']['c'][0]).format('LL'), 
+            moment.unix(args['endTime']['c'][0]).format('LL')
+          ]
+          appendRow(table, row)          
+          updateClaimsStats(claims)
+        })
+
+        Events.listenTransfer(App.account, function (event) {
+          console.log('transfer ', event)
+          transfers.push(event)
+          table = document.getElementById('table_transfers')
+          args = event['args']        
+          /*
+          row = [
+            args['employeeAddress'], 
+            args['budget']['c'][0], 
+            args['city'], 
+            moment.unix(args['startTime']['c'][0]).format('LL'), 
+            moment.unix(args['endTime']['c'][0]).format('LL')
+          ]
+          appendRow(table, row)          
+          updateTransfersStats(claims)
+          */
+        })
       }
+
       $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         md.initDashboardPageCharts();
         App.init(onWeb3Initialized);
-
       });
     </script>
 

@@ -23,11 +23,8 @@ App = {
     return App.init_contract(run);
   },
 
-  get_balance: function() {
-    web3.eth.getBalance(App.account, (err, wei) => {
-      var eth = web3._extend.utils.fromWei(wei, 'ether');
-      console.log(eth);
-    });
+  get_balance: function(cb) {    
+    web3.eth.getBalance(App.account, cb)
   },
 
   init_contract: function(run) {
@@ -42,8 +39,8 @@ App = {
   },
 
   addCompany: async function(companyName, amount) {
-    options ={
-      from: App.options,
+    options = {
+      from: App.account,
       value: amount
     };
     await promisify(cb => App.contract.addCompany(companyName, options, cb));
@@ -80,7 +77,10 @@ App = {
 	},
   allClaims: async function(address){
 	return promisify(cb => App.contract.allClaims(address, App.options, cb));
-	}
+  },
+  getEmployees: async function() {
+    return promisify(cb => App.contract.getEmployees(App.options, cb));
+  }
 
 };
 
@@ -95,3 +95,15 @@ promisify= (inner) =>
             }
         })
     );
+
+function wei_to_eth(wei) {
+  return wei / 1000000000000000000
+}
+
+function eth_to_wei(eth) {
+  return eth * 1000000000000000000
+}
+
+function formatPrice(wei) {
+  return 'Ξ' + (Math.floor(wei_to_eth(wei) * 1000) / 1000)
+}
