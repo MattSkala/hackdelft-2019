@@ -10,12 +10,14 @@ contract conditionalTokens {
     struct Employee{
 
     }
-
-    struct ServiceProvider{
-
-    }
     */
+    struct ServiceProvider{
+        uint exists;
+        string name;
+        //string location;
+    }
     mapping(address=>Company) public allCompanies;
+    mapping(address=>ServiceProvider) public allServiceProviders;
 
     function addCompany(string memory name) public payable{
         require(allCompanies[msg.sender].exists!=1);
@@ -25,7 +27,14 @@ contract conditionalTokens {
     /*
     function refillAccount();
     function addEmployee();
-    function addServiceProvider();
+    */
+    function addServiceProvider(string memory name, address addr) public payable{
+       // require(allServiceProviders[addr].exists!=1);
+        require(allServiceProviders[addr].exists!=1); //duplicate ServiceProvider
+        ServiceProvider memory newServiceProvider = ServiceProvider(1,name);
+        allServiceProviders[addr] = newServiceProvider;
+    }
+    /*
     function startTrip();
     function payServiceProvider();
     function endTrip();
@@ -36,4 +45,5 @@ contract conditionalTokens {
     function getBalance();
     */
 
+}
 }
