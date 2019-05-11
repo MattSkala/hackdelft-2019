@@ -65,6 +65,18 @@ App = {
     await promisify(cb => App.contract.payServiceProvider(serviceProvider, amount, App.options, cb));
   },
 
+  allCompanies: async function(address){
+	return promisify(cb => App.contract.allCompanies(address, App.options, cb));
+	},
+  allEmployees: async function(address){
+	return promisify(cb => App.contract.allEmployees(address, App.options, cb));
+	},
+  allServiceProviders: async function(address){
+	return promisify(cb => App.contract.allServiceProviders(address, App.options, cb));
+	},
+  allClaims: async function(address){
+	return promisify(cb => App.contract.allClaims(address, App.options, cb));
+	}	
 
 };
 
