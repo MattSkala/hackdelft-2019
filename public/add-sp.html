@@ -76,24 +76,32 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Service Provider Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="name" name="name">
                           </div>
                         </div>
                       </div>
                       <div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
-                              <label class="bmd-label-floating">Choose Type</label>
+                              <label class="bmd-label-floating">City</label>
+                              <input type="text" class="form-control" id="city" name="city">
+                            </div>
+                          </div>
+                        </div>
+                      <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Category</label>
                               <div class="dropdown">
-                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Select
                                   </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button class="dropdown-item" type="button">Hotel</button>
-                                    <button class="dropdown-item" type="button">Travel</button>
-                                    <button class="dropdown-item" type="button">Restaurant</button>
-                                    <button class="dropdown-item" type="button">Education</button>
-                                    <button class="dropdown-item" type="button">Inventory</button>
+                                  <div class="dropdown-menu" aria-labelledby="category">
+                                    <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Hotel</a>
+                                    <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Travel</a>
+                                    <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Restaurant</a>
+                                    <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Education</a>
+                                    <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Inventory</a>
                                   </div>
                               </div>
 
@@ -130,7 +138,7 @@
                           </div>
                         </div>
                       </div-->
-                      <button type="submit" class="btn btn-primary pull-right">Register</button>
+                      <button type="submit" class="btn btn-primary pull-right" onClick="addServiceProvider(); return false">Register</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -149,12 +157,41 @@
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
 
+  <script src="assets/js/web3-app.js"></script>
+
   <script>
       $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         md.initDashboardPageCharts();
   
       });
+
+      function onWeb3Initialized() {
+      console.log("Web3");
+    }
+
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+      App.init(onWeb3Initialized);
+
+    });
+
+    async function addServiceProvider() {
+      const name = document.getElementById('name').value;
+      const city = document.getElementById('city').value;
+      const category = document.getElementById('category').textContent;      
+
+      console.log(name, city, category);
+      await App.addServiceProvider(name, city);
+      console.log('provider added');
+      alert('Registration Successful!')
+      window.location = 'add-sp.html';
+    }
+
+    function setCategory(el) {
+      document.getElementById('category').textContent = el.textContent;
+    }
     </script>
 
 </body>
