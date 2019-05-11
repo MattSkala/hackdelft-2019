@@ -22,24 +22,24 @@
 
       Tip 2: you can also add an image using data-image tag
   -->
-      <div class="logo">        
+      <div class="logo">
         <a class="simple-text logo-normal">
           SpendWise
         </a>
       </div>
       <div class="sidebar-wrapper">
-        <ul class="nav">          
+        <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="add-company.html">
               <i class="material-icons">work</i>
               <p>Add Company</p>
-            </a>            
+            </a>
           </li-->
           <li class="nav-item active">
             <a class="nav-link" href="add-sp.html">
               <i class="material-icons">location_ons</i>
               <p>Add Service Provider</p>
-            </a>            
+            </a>
           </li>
           <!-- your sidebar here -->
         </ul>
@@ -57,12 +57,29 @@
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
-          </button>          
+          </button>
         </div>
       </nav>
       <!-- End Navbar -->
       <div class="content">
           <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-4">
+                  <div class="card card-chart">
+                    <div class="card-header card-header-success">
+                      <div id="qrcode"></div>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="card-title">Your Barcode</h4>
+                    </div>
+                    <div class="card-footer">
+                      <div class="stats">
+                        <i class="material-icons">access_time</i> updated 4 minutes ago
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
@@ -143,7 +160,7 @@
                     </form>
                   </div>
                 </div>
-              </div>             
+              </div>
             </div>
           </div>
         </div>
@@ -157,13 +174,14 @@
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
 
+  <script src="assets/js/core/qrcode.js"></script>
   <script src="assets/js/web3-app.js"></script>
 
   <script>
       $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         md.initDashboardPageCharts();
-  
+
       });
 
       function onWeb3Initialized() {
@@ -171,6 +189,14 @@
     }
 
     $(document).ready(function() {
+      var qrcode = new QRCode(document.getElementById("qrcode"), {
+      text: "http://jindo.dev.naver.com/collie",
+        width: 250,
+        height: 250,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
       App.init(onWeb3Initialized);
@@ -180,8 +206,7 @@
     async function addServiceProvider() {
       const name = document.getElementById('name').value;
       const city = document.getElementById('city').value;
-      const category = document.getElementById('category').textContent;      
-
+      const category = document.getElementById('category').textContent;
       console.log(name, city, category);
       await App.addServiceProvider(name, city);
       console.log('provider added');
