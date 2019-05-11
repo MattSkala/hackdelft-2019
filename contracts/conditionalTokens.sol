@@ -32,6 +32,7 @@ contract conditionalTokens {
     mapping(address=>Employee) public allEmployee;
     mapping(address=>address[]) public companyEmployees;
     mapping(address=>ServiceProvider) public allServiceProviders;
+    mapping(address=>Claim) public allTrips;
 
     function addCompany(string memory name) public payable{
         require(allCompanies[msg.sender].exists!=1);
@@ -49,10 +50,16 @@ contract conditionalTokens {
         ServiceProvider memory newServiceProvider = ServiceProvider(1,name,location);
         allServiceProviders[msg.sender] = newServiceProvider;
     }
+    
+    function startTrip(address emp_addr, string memory city, uint256 priceLimit, uint startTime, uint endTime) public {
+        require(allCompanies[msg.sender].exists==1);
+        require(allEmployee[emp_addr].exists==1);
+        Claim memory newClaim = Claim(msg.sender, priceLimit, city, startTime, endTime);
+        allTrips[emp_addr] = newClaim;
+    }
    /*
     function addEmployee();
-    function addServiceProvider();
-    function startTrip();
+    
     function payServiceProvider();
     function endTrip();
     function claimAccount();
@@ -63,3 +70,4 @@ contract conditionalTokens {
     */
 
 }
+
