@@ -1,16 +1,29 @@
 /*jshint esversion: 8 */
-function main(a){
+function test(a){
   return a;
 }
 
 Events = {
-  listen_transfer: async function(companyAddress, run) {
+  listenTransefer: async function(companyAddress, run) {
     filter = {companyAddress: companyAddress};
     additionalFilter = {fromBlock: 0, toBlock: 'latest'};
     transferEvent = App.contract.transfer(filter, additionalFilter);
     transferEvent.watch(function(error, result){
      if (!error){
-       console.log("Refer Event:");
+       console.log("Transfer Event:");
+       console.log(result);
+       run(result);
+     }
+    });
+  },
+
+  listen_claim: async function(companyAddress, run) {
+    filter = {companyAddress: companyAddress};
+    additionalFilter = {fromBlock: 0, toBlock: 'latest'};
+    transferEvent = App.contract.claim(filter, additionalFilter);
+    transferEvent.watch(function(error, result){
+     if (!error){
+       console.log("Claim Event:");
        console.log(result);
        run(result);
      }
@@ -19,7 +32,8 @@ Events = {
 
   init_events: async function() {
       console.log("Events are initialised!!");
-      Events.listen_transfer("0x369e32aed1dc5c33c85ab20977fb645a803e4a70", main);
+      Events.listenTransefer(App.account, test);
+      Events.listenClaim(App.account, test);
   }
 
 };

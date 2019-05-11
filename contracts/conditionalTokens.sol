@@ -81,11 +81,15 @@ contract conditionalTokens {
     }
 
     function strCmp(string memory a, string memory b) internal pure returns (bool) {
-    if(bytes(a).length != bytes(b).length) {
-        return false;
-    } else {
-        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
+        if(bytes(a).length != bytes(b).length) {
+            return false;
+        } else {
+            return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
+        }
     }
-}
+
+    function getEmployees() public view returns(address[] memory){
+        return companyEmployees[msg.sender];
+    }
 
 }
