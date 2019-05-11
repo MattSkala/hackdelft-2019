@@ -41,12 +41,18 @@
               <p>Add Company</p>
             </a>            
           </li-->
-          <li class="nav-item active ">
-            <a class="nav-link" href="#0">
-              <i class="material-icons">person</i>
-              <p>Add Employee</p>
-            </a>            
-          </li>
+          <li class="nav-item ">
+              <a class="nav-link" href="add-employee.html">
+                <i class="material-icons">person</i>
+                <p>Add Employee</p>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="add-claim.html">
+                <i class="material-icons">work</i>
+                <p>Allocate Budget</p>
+              </a>
+            </li>
           <!--li class="nav-item ">
             <a class="nav-link" href="#0">
               <i class="material-icons">location_ons</i>
@@ -103,7 +109,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Select Date</label>
-                            <input type="text" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" id="daterange" />
+                            <input type="text" class="form-control" name="daterange" id="daterange" />
                             </div>
                         </div>
                       </div>
@@ -165,7 +171,7 @@
                           </div>
                         </div>
                       </div-->
-                      <button type="submit" class="btn btn-primary pull-right" onClick="addEmployee(); return false">Enter</button>
+                      <button type="submit" class="btn btn-primary pull-right" onClick="addClaim(); return false">Enter</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -186,10 +192,14 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <script>
+    startTime = moment()
+    endTime = moment()
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         opens: 'left'
       }, function(start, end, label) {
+        startTime = start
+        endTime = end        
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
       });
     });
@@ -214,15 +224,17 @@
       });
   
       async function addClaim() {
+        console.log('addClaim')
         const address = App.account;
-        const name = document.getElementById('name').value;
+        const employeeAddress = document.getElementById('name').value;
         const city = document.getElementById('city').value;
-        const budget = document.getElementById('budget').value;
-        //const budget = document.getElementById('budget').value;
-        console.log(address, name, city);
-        await App.addEmployee(address, name, city);
-        console.log('employee added');
-        alert('Registration Successful!')
+        const budget = document.getElementById('budget').value;        
+        startTime = startTime.unix()
+        endTime = endTime.unix()
+        console.log(employeeAddress, city, budget, startTime, endTime);        
+        await App.addClaim(employeeAddress, city, budget, startTime, endTime);
+        console.log('claim  added');
+        alert('Claim Successful!')
         window.location = 'index.html';
       }
 

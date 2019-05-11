@@ -4,7 +4,7 @@ function test(a){
 }
 
 Events = {
-  listenTransefer: async function(companyAddress, run) {
+  listenTransfer: async function(companyAddress, run) {
     filter = {companyAddress: companyAddress};
     additionalFilter = {fromBlock: 0, toBlock: 'latest'};
     transferEvent = App.contract.transfer(filter, additionalFilter);
@@ -17,7 +17,7 @@ Events = {
     });
   },
 
-  listen_claim: async function(companyAddress, run) {
+  listenClaim: async function(companyAddress, run) {
     filter = {companyAddress: companyAddress};
     additionalFilter = {fromBlock: 0, toBlock: 'latest'};
     transferEvent = App.contract.claim(filter, additionalFilter);
@@ -32,7 +32,7 @@ Events = {
 
   init_events: async function() {
       console.log("Events are initialised!!");
-      Events.listenTransefer(App.account, test);
+      Events.listenTransfer(App.account, test);
       Events.listenClaim(App.account, test);
   }
 
