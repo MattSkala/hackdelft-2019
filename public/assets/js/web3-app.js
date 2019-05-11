@@ -45,6 +45,27 @@ App = {
     await promisify(cb => App.contract.addCompany(companyName, App.options, cb));
   }
 
+  addEmployee: async function(empAddr, name, homeCity) {
+    await promisify(cb => App.contract.addEmployee(empAddr, name, homeCity, App.options, cb));
+  }
+
+  addServiceProvider: async function(name, location) {
+    await promisify(cb => App.contract.addServiceProvider(name, location, App.options, cb));
+  }
+
+  refillAccount: async function() {
+    await promisify(cb => App.contract.refillAccount(App.options, cb));
+  }
+
+  addClaim: async function(employeeAddress, memory city, priceLimit, startTime, endTime) {
+    await promisify(cb => App.contract.addClaim(employeeAddress, memory city, priceLimit, startTime, endTime, App.options, cb));
+  }
+
+  payServiceProvider: async function(serviceProvider, amount) {
+    await promisify(cb => App.contract.payServiceProvider(serviceProvider, amount, App.options, cb));
+  }
+	
+
 };
 
 // Util to make async calls into promises
