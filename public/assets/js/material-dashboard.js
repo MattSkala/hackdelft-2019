@@ -188,9 +188,9 @@ md = {
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
       dataDailySalesChart = {
-        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         series: [
-          [12, 17, 7, 17, 23, 18, 38]
+          [12, 17, 7, 17, 23, 18, 38, 12, 17, 7, 17, 23]
         ]
       };
 
@@ -313,9 +313,9 @@ md = {
       /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
       dataDailySalesChart = {
-        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         series: [
-          [12, 17, 7, 17, 23, 18, 38]
+          [12, 17, 7, 17, 23, 18, 38, 12, 17, 7, 17, 23]
         ]
       };
 
