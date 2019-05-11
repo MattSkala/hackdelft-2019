@@ -41,8 +41,12 @@ App = {
     });
   },
 
-  addCompany: async function(companyName) {
-    await promisify(cb => App.contract.addCompany(companyName, App.options, cb));
+  addCompany: async function(companyName, amount) {
+    options ={
+      from: App.options,
+      value: amount
+    };
+    await promisify(cb => App.contract.addCompany(companyName, options, cb));
   },
 
   addEmployee: async function(empAddr, name, homeCity) {
