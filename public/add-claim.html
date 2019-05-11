@@ -41,13 +41,13 @@
               <p>Add Company</p>
             </a>            
           </li-->
-          <li class="nav-item active">
+          <li class="nav-item ">
               <a class="nav-link" href="add-employee.html">
                 <i class="material-icons">person</i>
                 <p>Add Employee</p>
               </a>
             </li>
-            <li class="nav-item ">
+            <li class="nav-item active">
               <a class="nav-link" href="add-claim.html">
                 <i class="material-icons">work</i>
                 <p>Allocate Budget</p>
@@ -68,7 +68,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Add Employee</a>
+            <a class="navbar-brand" href="#pablo">Allocate Budget</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -85,8 +85,8 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary">
-                    <h4 class="card-title">Add Employee</h4>
-                    <p class="card-category">Enter Employee expense details</p>
+                    <h4 class="card-title">Allocate Budget</h4>
+                    <p class="card-category">Allocate expense budget for an employee</p>
                   </div>
                   <div class="card-body">
                     <form>
@@ -99,31 +99,50 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                           <div class="form-group">
-                            <label class="bmd-label-floating">Home City</label>
-                            <input type="text" class="form-control" id="city">
+                            <label class="bmd-label-floating">Budget</label>
+                            <input type="text" class="form-control" id="budget">
                           </div>
                         </div>
-                      </div>
-                      <!--div class="row">
-                          <div class="col-md-12">
-                            <div class="form-group">
-                              <label class="bmd-label-floating">Enter Budget</label>
-                              <div class="dropdown">
-                              </div>
-                              <input class="form-control" type="text" placeholder="Default input">                              
-                            </div>
-                          </div>
-                        </div>
-                      <div class="row">
-                        <div class="col-md-12">
+                      
+                        <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Select Date</label>
-                            <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+                            <input type="text" class="form-control" name="daterange" id="daterange" />
                             </div>
                         </div>
-                      </div-->
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">City</label>
+                              <input type="text" class="form-control" id="city">
+                            </div>
+                          </div>
+                        
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Category</label>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Select
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="category">
+                                      <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Hotel</a>
+                                      <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Travel</a>
+                                      <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Restaurant</a>
+                                      <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Education</a>
+                                      <a class="dropdown-item" href="#" onClick="javascript:setCategory(this); return false">Inventory</a>
+                                    </div>
+                                </div>
+  
+                                <!--input class="form-control" type="text" placeholder="Default input"-->
+                                <!--input type="text" class="form-control"-->
+                              </div>
+                            </div>
+                          </div>
+                 
                       <!--div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -152,7 +171,7 @@
                           </div>
                         </div>
                       </div-->
-                      <button type="submit" class="btn btn-primary pull-right" onClick="addEmployee(); return false">Enter</button>
+                      <button type="submit" class="btn btn-primary pull-right" onClick="addClaim(); return false">Enter</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -173,10 +192,14 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <script>
+    startTime = moment()
+    endTime = moment()
     $(function() {
       $('input[name="daterange"]').daterangepicker({
         opens: 'left'
       }, function(start, end, label) {
+        startTime = start
+        endTime = end        
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
       });
     });
@@ -200,16 +223,24 @@
   
       });
   
-      async function addEmployee() {
+      async function addClaim() {
+        console.log('addClaim')
         const address = App.account;
-        const name = document.getElementById('name').value;
+        const employeeAddress = document.getElementById('name').value;
         const city = document.getElementById('city').value;
-        console.log(address, name, city);
-        await App.addEmployee(address, name, city);
-        console.log('employee added');
-        alert('Registration Successful!')
+        const budget = document.getElementById('budget').value;        
+        startTime = startTime.unix()
+        endTime = endTime.unix()
+        console.log(employeeAddress, city, budget, startTime, endTime);        
+        await App.addClaim(employeeAddress, city, budget, startTime, endTime);
+        console.log('claim  added');
+        alert('Claim Successful!')
         window.location = 'index.html';
       }
+
+      function setCategory(el) {
+      document.getElementById('category').textContent = el.textContent;
+    }
   </script>
   
 </body>
