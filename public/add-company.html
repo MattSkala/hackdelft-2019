@@ -30,13 +30,13 @@
       <div class="sidebar-wrapper">
         <ul class="nav">          
           <li class="nav-item active">
-            <a class="nav-link" href="#0">
+            <a class="nav-link" href="add-company.html">
               <i class="material-icons">work</i>
               <p>Add Company</p>
             </a>            
           </li-->
           <li class="nav-item ">
-            <a class="nav-link" href="#0">
+            <a class="nav-link" href="add-sp.html">
               <i class="material-icons">location_ons</i>
               <p>Add Service Provider</p>
             </a>            
@@ -64,7 +64,7 @@
       <div class="content">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary">
                     <h4 class="card-title">Add Company</h4>
@@ -76,7 +76,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Company Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="companyName">
                           </div>
                         </div>
                       </div>
@@ -116,7 +116,7 @@
                           </div>
                         </div>
                       </div-->
-                      <button type="submit" class="btn btn-primary pull-right">Register</button>
+                      <button type="submit" class="btn btn-primary pull-right" onClick="addCompany(); return false;">Register</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -135,13 +135,31 @@
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
 
-  <script>
-      $(document).ready(function() {
-        // Javascript method's body can be found in assets/js/demos.js
-        md.initDashboardPageCharts();
-  
-      });
-    </script>
+  <script src="assets/js/web3-app.js"></script>
+
+</script>
+
+<script>
+    function onWeb3Initialized() {
+      console.log("Web3");
+    }
+
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+      App.init(onWeb3Initialized);
+
+    });
+
+    async function addCompany() {
+      const companyName = document.getElementById('companyName').value;
+      console.log(companyName);
+      await App.addCompany(companyName);
+      console.log('company added');      
+      alert('Registration Successful!')
+      window.location = 'index.html';
+    }
+</script>
 
 </body>
 

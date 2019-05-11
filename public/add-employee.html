@@ -30,7 +30,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item ">
-            <a class="nav-link" href="#0">
+            <a class="nav-link" href="index.html">
               <i class="material-icons">dashboard</i>
               <p>Company Dashboard</p>
             </a>            
@@ -76,7 +76,7 @@
       <div class="content">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary">
                     <h4 class="card-title">Add Employee</h4>
@@ -88,18 +88,25 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Employee Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="name">
                           </div>
                         </div>
                       </div>
                       <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Home City</label>
+                            <input type="text" class="form-control" id="city">
+                          </div>
+                        </div>
+                      </div>
+                      <!--div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
                               <label class="bmd-label-floating">Enter Budget</label>
                               <div class="dropdown">
                               </div>
-                              <input class="form-control" type="text" placeholder="Default input">
-                              <!--input type="text" class="form-control"-->
+                              <input class="form-control" type="text" placeholder="Default input">                              
                             </div>
                           </div>
                         </div>
@@ -110,7 +117,7 @@
                             <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
                             </div>
                         </div>
-                      </div>
+                      </div-->
                       <!--div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -139,7 +146,7 @@
                           </div>
                         </div>
                       </div-->
-                      <button type="submit" class="btn btn-primary pull-right">Enter</button>
+                      <button type="submit" class="btn btn-primary pull-right" onClick="addEmployee(); return false">Enter</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -173,14 +180,32 @@
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
 
+  <script src="assets/js/web3-app.js"></script>
+
   <script>
+      function onWeb3Initialized() {
+        console.log("Web3");
+      }
+  
       $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         md.initDashboardPageCharts();
+        App.init(onWeb3Initialized);
   
       });
-    </script>
-
+  
+      async function addEmployee() {
+        const address = App.account;
+        const name = document.getElementById('name').value;
+        const city = document.getElementById('city').value;
+        console.log(address, name, city);
+        await App.addEmployee(address, name, city);
+        console.log('employee added');
+        alert('Registration Successful!')
+        window.location = 'index.html';
+      }
+  </script>
+  
 </body>
 
 </html>
