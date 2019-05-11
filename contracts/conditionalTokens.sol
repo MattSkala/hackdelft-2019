@@ -35,8 +35,8 @@ contract conditionalTokens {
     mapping(address=>ServiceProvider) public allServiceProviders;
     mapping(address=>Claim) public allClaims;
 
-    event transfer(address indexed company, address indexed employeeAddress, address serviceProvider, uint amount);
-    event claim(address indexed company, address indexed employeeAddress, uint256 budget, string city, uint startTime, uint endTime);
+    event transfer(address indexed companyAddress, address indexed employeeAddress, address serviceProvider, uint amount);
+    event claim(address indexed companyAddress, address indexed employeeAddress, uint256 budget, string city, uint startTime, uint endTime);
     function addCompany(string memory name) public payable{
         require(allCompanies[msg.sender].exists!=1);
         Company memory newCompany = Company(1, msg.value, name);

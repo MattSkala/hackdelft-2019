@@ -3,7 +3,7 @@
 
 App = {
   account: '',
-  address: '0xa0dfbf1fbd9c7c32700c1c93027409f2936cb1c5',
+  address: '0x16b72c6007d91afc703463d66156b3a7d6cf2679',
   contract: '',
   options: {
     from: this.account
@@ -76,7 +76,7 @@ App = {
 	},
   allClaims: async function(address){
 	return promisify(cb => App.contract.allClaims(address, App.options, cb));
-	}	
+	}
 
 };
 
