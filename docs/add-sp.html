@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Hello, world!</title>
+  <title>SpendWise</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -189,6 +189,7 @@
 
   <script src="assets/js/core/qrcode.js"></script>
   <script src="assets/js/web3-app.js"></script>
+  <script src="assets/js/events.js"></script>
 
   <script>
       $(document).ready(function() {
@@ -198,44 +199,21 @@
       });
 
       function onWeb3Initialized() {        
-      console.log("Web3");
+        console.log("Web3");
 
-      document.getElementById('address').textContent = App.account
-      
-      var qrcode = new QRCode(document.getElementById("qrcode"), {
-      text: 'ethereum:' + App.account,
-        width: 250,
-        height: 250,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-      });
-    }
+        document.getElementById('address').textContent = App.account
+        
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: 'ethereum:' + App.account,
+          width: 250,
+          height: 250,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
 
-    $(document).ready(function() {
-     
-      // Javascript method's body can be found in assets/js/demos.js
-      md.initDashboardPageCharts();
-      App.init(onWeb3Initialized);
-
-    });
-
-    async function addServiceProvider() {
-      const name = document.getElementById('name').value;
-      const city = document.getElementById('city').value;
-      const category = document.getElementById('category').textContent;
-      console.log(name, city, category);
-      await App.addServiceProvider(name, city);
-      console.log('provider added');
-      alert('Registration Successful!')
-      window.location = 'add-sp.html';
-    }
-
-    function setCategory(el) {
-      document.getElementById('category').textContent = el.textContent;
-    }
-
-    Events.listenTransferForProvider(App.account, async function (event) {
+          
+        Events.listenTransferForProvider(App.account, async function (event) {
           console.log('transfer ', event)
           transfers.push(event)
           const table = document.getElementById('table_transfers')
@@ -254,6 +232,33 @@
           appendRow(table, row)
           updateTransfersStats(transfers)
         })
+    }
+
+    $(document).ready(function() {
+     
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+      App.init(onWeb3Initialized);
+
+    });
+
+    async function addServiceProvider() {
+      const name = document.getElementById('name').value;
+      const city = document.getElementById('city').value;
+      const category = document.getElementById('category').textContent;
+      console.log(name, city, category);
+      await App.addServiceProvider(name, city, category);
+      console.log('provider added');
+      alert('Registration Successful!')
+      window.location = 'add-sp.html';
+    }
+
+    function setCategory(el) {
+      document.getElementById('category').textContent = el.textContent;
+    }
+
+    transfers = [];
+  
     </script>
 
 </body>

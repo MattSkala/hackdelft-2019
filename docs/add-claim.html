@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Hello, world!</title>
+  <title>SpendWise</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -264,8 +264,9 @@
         const budget = document.getElementById('budget').value;
         startTimeUnix = startTime.startOf('day').unix()
         endTimeUnix = endTime.endOf('day').unix()
-        console.log(employeeAddress, city, budget, startTimeUnix, endTimeUnix);                
-        await App.addClaim(employeeAddress, city, budget, startTimeUnix, endTimeUnix);
+        const category = document.getElementById('category').textContent;
+        console.log(employeeAddress, city, budget, startTimeUnix, endTimeUnix, category);        
+        await App.addClaim(employeeAddress, city, budget, startTimeUnix, endTimeUnix, category);
         console.log('claim  added');
         alert('Claim Successful!')
         window.location = 'dashboard.html';
