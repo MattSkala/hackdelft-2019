@@ -84,7 +84,7 @@
                           <thead class="text-warning">
                             <th>Employee</th>
                             <th>Amount</th>                            
-                            <th>Block</th>
+                            <th>Time</th>
                           </thead>
                           <tbody id="table_transfers">                        
                           </tbody>
@@ -183,6 +183,7 @@
   <script src="assets/js/core/jquery.min.js"></script>
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
@@ -198,7 +199,17 @@
 
       });
 
-      function onWeb3Initialized() {        
+      function appendRow(table, data) {
+        tr = document.createElement('tr')
+        data.forEach(item => {
+          td = document.createElement('td')
+          td.appendChild(document.createTextNode(item))
+          tr.appendChild(td)
+        })
+        table.appendChild(tr)
+      }
+      
+      async function onWeb3Initialized() {        
         console.log("Web3");
 
         document.getElementById('address').textContent = App.account
@@ -227,11 +238,18 @@
           row = [
             employee[1],             
             formatPrice(args['amount']),            
-            '#' + event['blockNumber']
+            moment.unix(args['now']).format('LLL')
           ]
-          appendRow(table, row)
-          updateTransfersStats(transfers)
+          appendRow(table, row)          
         })
+
+        const provider = await App.allServiceProviders(App.account)
+        console.log(provider)        
+        if (provider[0]) { // exists
+          document.getElementById('name').value = provider[1]
+          document.getElementById('city').value = provider[3]
+          document.getElementById('category').textContent = provider[2]
+        }
     }
 
     $(document).ready(function() {
@@ -247,7 +265,7 @@
       const city = document.getElementById('city').value;
       const category = document.getElementById('category').textContent;
       console.log(name, city, category);
-      await App.addServiceProvider(name, city, category);
+      await App.addServiceProvider(name, category, city);
       console.log('provider added');
       alert('Registration Successful!')
       window.location = 'add-sp.html';
