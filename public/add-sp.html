@@ -70,12 +70,7 @@
                       <div id="qrcode"></div>
                     </div>
                     <div class="card-body">
-                      <h4 class="card-title">Your Barcode</h4>
-                    </div>
-                    <div class="card-footer">
-                      <div class="stats">
-                        <i class="material-icons">access_time</i> updated 4 minutes ago
-                      </div>
+                      <h4 class="card-title" id="address"></h4>
                     </div>
                   </div>
                 </div>
@@ -184,19 +179,23 @@
 
       });
 
-      function onWeb3Initialized() {
+      function onWeb3Initialized() {        
       console.log("Web3");
-    }
 
-    $(document).ready(function() {
+      document.getElementById('address').textContent = App.account
+      
       var qrcode = new QRCode(document.getElementById("qrcode"), {
-      text: "http://jindo.dev.naver.com/collie",
+      text: 'ethereum:' + App.account,
         width: 250,
         height: 250,
         colorDark : "#000000",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
       });
+    }
+
+    $(document).ready(function() {
+     
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
       App.init(onWeb3Initialized);

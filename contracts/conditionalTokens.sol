@@ -71,11 +71,12 @@ contract conditionalTokens {
     }
 
     function payServiceProvider(address payable serviceProvider, uint amount) public {
-        require(allClaims[msg.sender].exists==1);
-        require(allClaims[msg.sender].startTime<now && allClaims[msg.sender].endTime>now);
-        require(allServiceProviders[serviceProvider].exists==1);
-        require(!strCmp(allClaims[msg.sender].city, allEmployees[msg.sender].homeCity) && strCmp(allClaims[msg.sender].city, allServiceProviders[serviceProvider].city));
-        require(allClaims[msg.sender].budget>amount);
+        require(allClaims[msg.sender].exists==1, 'Claim does not exist');
+        require(allClaims[msg.sender].startTime<now && allClaims[msg.sender].endTime>now, 'Incorrect start or end time');
+        require(allServiceProviders[serviceProvider].exists==1, 'Service provider does not exist');
+        require(!strCmp(allClaims[msg.sender].city, allEmployees[msg.sender].homeCity), 'City is a home city');
+        require(strCmp(allClaims[msg.sender].city, allServiceProviders[serviceProvider].city), 'City is not allowed');
+        require(allClaims[msg.sender].budget>amount, 'Over budget yo');
         emit transfer(allEmployees[msg.sender].company, msg.sender, serviceProvider, amount);
         serviceProvider.transfer(amount);
     }
