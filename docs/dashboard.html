@@ -298,7 +298,7 @@
     }
 
     function updateTransfersStats(transfers) {
-      const _transfers = transfers.map(transfer => transfer['event']['args']['amount'])
+      const _transfers = transfers.map(transfer => parseInt(transfer['event']['args']['amount']))
       console.log('updateTransfers', _transfers)
       sum = _transfers.reduce((total, num) => total + num);
       console.log('sum', sum)
