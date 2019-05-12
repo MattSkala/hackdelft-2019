@@ -15,28 +15,6 @@
 </head>
 
 
-<script>
-  //pie
-  var ctxP = document.getElementById("pieChart").getContext('2d');
-  var myPieChart = new Chart(ctxP, {
-    type: 'pie',
-    data: {
-      labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
-      datasets: [{
-        data: [300, 50, 100, 40, 120],
-        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
-      }]
-    },
-    options: {
-      responsive: true
-    }
-  });
-
- </script>
-
-
-
 <body>
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white">
@@ -178,7 +156,7 @@
               </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="card card-chart">
                       <div class="card-header card-header-success">
                         <div class="ct-chart" id="dailySalesChart"></div>
@@ -195,9 +173,18 @@
                       </div>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <canvas id="pieChart"></canvas>
+                <div class="col-md-6">
+                    <div class="card card-chart">
+                        <div class="card-header card-header-success">
+                            <div id="piechart"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Category of Expenses</h4>
+
+                        </div>
+                    </div>
                 </div>
+  
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -275,7 +262,34 @@
   <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
-  
+  <!--pie chart categories-->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script type="text/javascript">
+  // Load google charts
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Draw the chart and set the chart values
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+    ['Categories', 'Service Sectors'],
+    ['Hotel', 10],
+    ['Restaurants', 2],
+    ['Inventory', 4],
+    ['Education', 2],
+    ['Travel', 8]
+  ]);
+
+    // Optional; add a title and set the width and height of the chart
+    var options = {'width':525, 'height':300};
+
+    // Display the chart inside the <div> element with id="piechart"
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
+  }
+  </script>
+
   <!--web3-apps-->
   <script src="assets/js/web3-app.js"></script>
   <script src="assets/js/events.js"></script>
