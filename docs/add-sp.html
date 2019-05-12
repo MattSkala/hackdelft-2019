@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Hello, world!</title>
+  <title>SpendWise</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -74,6 +74,24 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-8">
+                    <div class="card">
+                      <div class="card-header card-header-info">
+                        <h4 class="card-title" id="transactions">Transactions</h4>
+                      </div>
+                      <div class="card-body table-responsive">
+                        <table class="table table-hover">
+                          <thead class="text-warning">
+                            <th>Employee</th>
+                            <th>Amount</th>                            
+                            <th>Time</th>
+                          </thead>
+                          <tbody id="table_transfers">                        
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -165,12 +183,14 @@
   <script src="assets/js/core/jquery.min.js"></script>
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
 
   <script src="assets/js/core/qrcode.js"></script>
   <script src="assets/js/web3-app.js"></script>
+  <script src="assets/js/events.js"></script>
 
   <script>
       $(document).ready(function() {
@@ -179,19 +199,57 @@
 
       });
 
-      function onWeb3Initialized() {        
-      console.log("Web3");
-
-      document.getElementById('address').textContent = App.account
+      function appendRow(table, data) {
+        tr = document.createElement('tr')
+        data.forEach(item => {
+          td = document.createElement('td')
+          td.appendChild(document.createTextNode(item))
+          tr.appendChild(td)
+        })
+        table.appendChild(tr)
+      }
       
-      var qrcode = new QRCode(document.getElementById("qrcode"), {
-      text: 'ethereum:' + App.account,
-        width: 250,
-        height: 250,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-      });
+      async function onWeb3Initialized() {        
+        console.log("Web3");
+
+        document.getElementById('address').textContent = App.account
+        
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: 'ethereum:' + App.account,
+          width: 250,
+          height: 250,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+
+          
+        Events.listenTransferForProvider(App.account, async function (event) {
+          console.log('transfer ', event)
+          transfers.push(event)
+          const table = document.getElementById('table_transfers')
+          const args = event['args']
+                    
+          //serviceProvider = await App.allServiceProviders(args['serviceProvider'])          
+          //serviceProviderName = serviceProvider[1]
+          //city = serviceProvider[2]          
+
+          const employee = await App.allEmployees(args['employeeAddress'])
+          row = [
+            employee[1],             
+            formatPrice(args['amount']),            
+            moment.unix(args['now']).format('LLL')
+          ]
+          appendRow(table, row)          
+        })
+
+        const provider = await App.allServiceProviders(App.account)
+        console.log(provider)        
+        if (provider[0]) { // exists
+          document.getElementById('name').value = provider[1]
+          document.getElementById('city').value = provider[3]
+          document.getElementById('category').textContent = provider[2]
+        }
     }
 
     $(document).ready(function() {
@@ -207,7 +265,7 @@
       const city = document.getElementById('city').value;
       const category = document.getElementById('category').textContent;
       console.log(name, city, category);
-      await App.addServiceProvider(name, city);
+      await App.addServiceProvider(name, category, city);
       console.log('provider added');
       alert('Registration Successful!')
       window.location = 'add-sp.html';
@@ -216,6 +274,9 @@
     function setCategory(el) {
       document.getElementById('category').textContent = el.textContent;
     }
+
+    transfers = [];
+  
     </script>
 
 </body>

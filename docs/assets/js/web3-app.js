@@ -50,16 +50,16 @@ App = {
     await promisify(cb => App.contract.addEmployee(empAddr, name, homeCity, App.options, cb));
   },
 
-  addServiceProvider: async function(name, location) {
-    await promisify(cb => App.contract.addServiceProvider(name, location, App.options, cb));
+  addServiceProvider: async function(name, location, category) {
+    await promisify(cb => App.contract.addServiceProvider(name, location, category, App.options, cb));
   },
 
   refillAccount: async function() {
     await promisify(cb => App.contract.refillAccount(App.options, cb));
   },
 
-  addClaim: async function(employeeAddress, city, priceLimit, startTime, endTime) {
-    await promisify(cb => App.contract.addClaim(employeeAddress, city, priceLimit, startTime, endTime, App.options, cb));
+  addClaim: async function(employeeAddress, city, priceLimit, startTime, endTime, category) {
+    await promisify(cb => App.contract.addClaim(employeeAddress, city, priceLimit, startTime, endTime, category, App.options, cb));
   },
 
   payServiceProvider: async function(serviceProvider, amount) {
