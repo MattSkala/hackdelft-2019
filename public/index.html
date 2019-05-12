@@ -125,8 +125,8 @@
                     <div class="card-icon">
                       <i class="material-icons">attach_money</i>
                     </div>
-                    <p class="card-category" id="spent_amount">Spent</p>
-                    <h3 class="card-title">$0
+                    <p class="card-category">Spent</p>
+                    <h3 class="card-title" id="spent_amount">$0
                     </h3>
                   </div>
                   <div class="card-footer">
@@ -189,7 +189,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
-                  <div class="card-header card-header-warning">
+                  <div class="card-header card-header-danger">
                     <h4 class="card-title" id="allocations">Budget Allocations</h4>                    
                   </div>
                   <div class="card-body table-responsive">
@@ -211,8 +211,8 @@
             <div class="row">
                 <div class="col-md-12">
                   <div class="card">
-                    <div class="card-header card-header-warning">
-                      <h4 class="card-title" id="allocations">Transactions</h4>
+                    <div class="card-header card-header-info">
+                      <h4 class="card-title" id="transactions">Transactions</h4>
                     </div>
                     <div class="card-body table-responsive">
                       <table class="table table-hover">
@@ -221,7 +221,7 @@
                           <th>Amount</th>
                           <th>Service Provider</th>
                           <th>City</th>
-                          <th>Date</th>
+                          <th>Block</th>
                         </thead>
                         <tbody id="table_transfers">                        
                         </tbody>
@@ -233,7 +233,7 @@
             <div class="row">
                 <div class="col-md-12">
                   <div class="card">
-                    <div class="card-header card-header-warning">
+                    <div class="card-header card-header-success">
                       <h4 class="card-title" id="employees">Employees</h4>                      
                     </div>
                     <div class="card-body table-responsive">
@@ -307,18 +307,27 @@
     }
 
     async function updateBalanceStats() {
-      App.get_balance(function (err, balance) {
-        console.log('balance: ', balance)
-        document.getElementById('balance').textContent = formatPrice(balance)
-      })      
+      company = await App.allCompanies(App.account)
+      console.log(company)
+      balance = company[1]
+      console.log('balance: ', balance)
+      document.getElementById('balance').textContent = formatPrice(balance)      
     }
 
     function updateClaimsStats(claims) {
-      claims = claims.map(claim => claim['args']['budget']['c'][0])      
+      claims = claims.map(claim => parseInt(claim['args']['budget']))
       console.log('updateClaims', claims)
-      sum = claims.reduce((total, claim) => total + num);
+      sum = claims.reduce((total, num) => total + num);
       console.log('sum', sum)
-      document.getElementById('claims_amount').textContent = formatPrice(sum)
+      document.getElementById('claims_amount').textContent = formatPrice(parseInt(sum))
+    }
+
+    function updateTransfersStats(transfers) {
+      transfers = transfers.map(transfer => transfer['args']['amount'])
+      console.log('updateTransfers', transfers)
+      sum = transfers.reduce((total, num) => total + num);
+      console.log('sum', sum)
+      document.getElementById('spent_amount').textContent = formatPrice(sum)
     }
 
       async function onWeb3Initialized(){
@@ -348,38 +357,43 @@
         claims = []
         transfers = []
 
-        Events.listenClaim(App.account, function (claim) {
+        Events.listenClaim(App.account, async function (claim) {
           console.log('claim', claim)
           claims.push(claim)
-          table = document.getElementById('table_claims')
-          args = claim['args']
+          const table = document.getElementById('table_claims')
+          const args = claim['args']
+          const employee = await App.allEmployees(args['employeeAddress'])
           row = [
-            args['employeeAddress'], 
-            formatPrice(args['budget']['c'][0]), 
+            employee[1], 
+            formatPrice(args['budget']), 
             args['city'], 
-            moment.unix(args['startTime']['c'][0]).format('LL'), 
-            moment.unix(args['endTime']['c'][0]).format('LL')
+            moment.unix(args['startTime']).format('LL'), 
+            moment.unix(args['endTime']).format('LL')
           ]
           appendRow(table, row)          
           updateClaimsStats(claims)
         })
 
-        Events.listenTransfer(App.account, function (event) {
+        Events.listenTransfer(App.account, async function (event) {
           console.log('transfer ', event)
           transfers.push(event)
-          table = document.getElementById('table_transfers')
-          args = event['args']        
-          /*
+          const table = document.getElementById('table_transfers')
+          const args = event['args']
+                    
+          serviceProvider = await App.allServiceProviders(args['serviceProvider'])          
+          serviceProviderName = serviceProvider[1]
+          city = serviceProvider[2]          
+
+          const employee = await App.allEmployees(args['employeeAddress'])
           row = [
-            args['employeeAddress'], 
-            args['budget']['c'][0], 
-            args['city'], 
-            moment.unix(args['startTime']['c'][0]).format('LL'), 
-            moment.unix(args['endTime']['c'][0]).format('LL')
+            employee[1],             
+            formatPrice(args['amount']), 
+            serviceProviderName, 
+            city,
+            '#' + event['blockNumber']
           ]
-          appendRow(table, row)          
-          updateTransfersStats(claims)
-          */
+          appendRow(table, row)
+          updateTransfersStats(transfers)
         })
       }
 

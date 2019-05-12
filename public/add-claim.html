@@ -94,14 +94,23 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Employee Name</label>
-                            <input type="text" class="form-control" id="name">
+                            <!--input type="text" class="form-control" id="name"-->
+                            
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Select
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="category" id="name_dropdown">
+                                </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label class="bmd-label-floating">Budget</label>
+                            <label class="bmd-label-floating">Budget (Ξ)</label>
                             <input type="text" class="form-control" id="budget">
                           </div>
                         </div>
@@ -212,8 +221,32 @@
   <script src="assets/js/web3-app.js"></script>
 
   <script>
-      function onWeb3Initialized() {
+      async function onWeb3Initialized() {
         console.log("Web3");
+
+        employees = await App.getEmployees();
+        employees = await Promise.all(employees.map(async function (employee) {
+          console.log(employee)
+          return {address: employee, employee: await App.allEmployees(employee)}
+        }))
+
+        const dropdown = document.getElementById('name_dropdown')
+        employees.forEach(employee => {
+          const item = document.createElement('a')
+          item.setAttribute('class', 'dropdown-item')
+          item.setAttribute('href', '#')
+          item.dataset.address = employee['address']
+          item.onclick = function (e) {
+            const address = e.target.dataset.address
+            console.log('click', address)
+            document.getElementById('name').textContent = e.target.textContent
+            document.getElementById('name').dataset.address = address
+            return false
+          }
+          console.log(employee['employee'])
+          item.textContent = employee['employee'][1]
+          dropdown.appendChild(item)
+        })        
       }
   
       $(document).ready(function() {
@@ -226,13 +259,13 @@
       async function addClaim() {
         console.log('addClaim')
         const address = App.account;
-        const employeeAddress = document.getElementById('name').value;
+        const employeeAddress = document.getElementById('name').dataset.address;
         const city = document.getElementById('city').value;
         const budget = eth_to_wei(document.getElementById('budget').value);        
-        startTime = startTime.unix()
-        endTime = endTime.unix()
-        console.log(employeeAddress, city, budget, startTime, endTime);        
-        await App.addClaim(employeeAddress, city, budget, startTime, endTime);
+        startTimeUnix = startTime.startOf('day').unix()
+        endTimeUnix = endTime.endOf('day').unix()
+        console.log(employeeAddress, city, budget, startTimeUnix, endTimeUnix);                
+        await App.addClaim(employeeAddress, city, budget, startTimeUnix, endTimeUnix);
         console.log('claim  added');
         alert('Claim Successful!')
         window.location = 'index.html';
