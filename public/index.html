@@ -343,13 +343,14 @@
         claims = []
         transfers = []
 
-        Events.listenClaim(App.account, function (claim) {
+        Events.listenClaim(App.account, async function (claim) {
           console.log('claim', claim)
           claims.push(claim)
           const table = document.getElementById('table_claims')
-          args = claim['args']
+          const args = claim['args']
+          const employee = await App.allEmployees(args['employeeAddress'])
           row = [
-            args['employeeAddress'], 
+            employee[1], 
             formatPrice(args['budget']), 
             args['city'], 
             moment.unix(args['startTime']).format('LL'), 
@@ -363,13 +364,15 @@
           console.log('transfer ', event)
           transfers.push(event)
           const table = document.getElementById('table_transfers')
-          args = event['args']
+          const args = event['args']
                     
           serviceProvider = await App.allServiceProviders(args['serviceProvider'])          
           serviceProviderName = serviceProvider[1]
           city = serviceProvider[2]          
+
+          const employee = await App.allEmployees(args['employeeAddress'])
           row = [
-            args['employeeAddress'],             
+            employee[1],             
             formatPrice(args['amount']), 
             serviceProviderName, 
             city,
