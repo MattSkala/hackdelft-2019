@@ -162,7 +162,7 @@
                         <div class="ct-chart" id="dailySalesChart"></div>
                       </div>
                       <div class="card-body">
-                        <h4 class="card-title">Monthly Spendings</h4>
+                        <h4 class="card-title">Monthly Budget</h4>
                         <!--p class="card-category">
                           <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p-->
                       </div>
@@ -175,7 +175,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card card-chart">
-                        <div class="card-header card-header-success">
+                        <div class="card-header card-header-info">
                             <div class="ct-chart" id="piechart"></div>
                         </div>
                         <div class="card-body">
@@ -273,8 +273,34 @@
 
   // Draw the chart and set the chart values
   function drawChart() {
+    dataDailySalesChart = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+          [12, 17, 7, 17, 23, 18, 38, 12, 17, 7, 17, 23]
+        ]
+      };
+
+      optionsDailySalesChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+      }
+
+      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+      md.startAnimationForLineChart(dailySalesChart);
+
+
     var data = {
-      labels: ['Bananas', 'Apples', 'Grapes'],
+      labels: ['Hotel', 'Restaurant', 'Travel'],
       series: [20, 15, 40]
     };
     
