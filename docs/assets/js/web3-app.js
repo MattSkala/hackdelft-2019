@@ -3,7 +3,7 @@
 
 App = {
   account: '',
-  address: '0xc140f39d6ce3c5b121d10994596d647a4552a340',
+  address: '0x688673f42d532277ea8ddf172e9fada75947f46d',
   contract: '',
   options: {
     from: this.account
@@ -28,7 +28,7 @@ App = {
   },
 
   init_contract: function(run) {
-    $.getJSON( "../build/contracts/conditionalTokens.json", function( jsonInterface ) {
+    $.getJSON( "../build/contracts/erc20.json", function( jsonInterface ) {
       //console.log(jsonInterface);
       App.contract = web3.eth.contract(jsonInterface.abi).at(App.address);
       App.account = web3.eth.defaultAccount;

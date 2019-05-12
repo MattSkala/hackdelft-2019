@@ -37,7 +37,7 @@ contract conditionalTokens {
     mapping(address=>ServiceProvider) public allServiceProviders;
     mapping(address=>Claim) public allClaims;
 
-    event transfer(address indexed companyAddress, address indexed employeeAddress, address serviceProvider, uint amount, uint now);
+    event _transfer(address indexed companyAddress, address indexed employeeAddress, address serviceProvider, uint amount, uint now);
     event claim(address indexed companyAddress, address indexed employeeAddress, uint256 budget, string city, string category, uint startTime, uint endTime);
     function addCompany(string memory name) public payable{
         //require(allCompanies[msg.sender].exists!=1);
@@ -58,9 +58,9 @@ contract conditionalTokens {
         allCompanies[msg.sender].balance = msg.value;
     }
 
-    function addServiceProvider(string memory name, string memory location, string memory category) public payable{
+    function addServiceProvider(string memory name, string memory category, string memory location) public payable{
         //require(allServiceProviders[msg.sender].exists!=1);
-        ServiceProvider memory newServiceProvider = ServiceProvider(1,name,location, category);
+        ServiceProvider memory newServiceProvider = ServiceProvider(1, name, category, location);
         allServiceProviders[msg.sender] = newServiceProvider;
     }
 
@@ -80,7 +80,7 @@ contract conditionalTokens {
         require(!strCmp(allClaims[msg.sender].city, allEmployees[msg.sender].homeCity), 'City is a home city');
         require(strCmp(allClaims[msg.sender].city, allServiceProviders[serviceProvider].city), 'City is not allowed');
         require(allClaims[msg.sender].budget>amount, 'Over budget yo');
-        emit transfer(allEmployees[msg.sender].company, msg.sender, serviceProvider, amount, now);
+        emit _transfer(allEmployees[msg.sender].company, msg.sender, serviceProvider, amount, now);
         serviceProvider.transfer(amount);
     }
 
