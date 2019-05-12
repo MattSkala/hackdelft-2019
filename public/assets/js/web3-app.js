@@ -105,5 +105,5 @@ function eth_to_wei(eth) {
 }
 
 function formatPrice(wei) {
-  return 'Ξ' + (Math.floor(wei_to_eth(wei) * 1000) / 1000)
+  return 'Ξ' + wei
 }

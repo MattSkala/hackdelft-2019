@@ -161,12 +161,12 @@
 
     async function addCompany() {
       const companyName = document.getElementById('companyName').value;
-      const amount = eth_to_wei(document.getElementById('amount').value);
+      const amount = document.getElementById('amount').value;
       console.log(companyName, amount);
       await App.addCompany(companyName, amount);
       console.log('company added');      
       alert('Registration Successful!')
-      window.location = 'index.html';
+      window.location = 'dashboard.html';
     }
 </script>
 

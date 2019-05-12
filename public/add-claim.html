@@ -30,7 +30,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item ">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="dashboard.html">
               <i class="material-icons">dashboard</i>
               <p>Company Dashboard</p>
             </a>            
@@ -261,14 +261,14 @@
         const address = App.account;
         const employeeAddress = document.getElementById('name').dataset.address;
         const city = document.getElementById('city').value;
-        const budget = eth_to_wei(document.getElementById('budget').value);        
+        const budget = document.getElementById('budget').value;
         startTimeUnix = startTime.startOf('day').unix()
         endTimeUnix = endTime.endOf('day').unix()
         console.log(employeeAddress, city, budget, startTimeUnix, endTimeUnix);                
         await App.addClaim(employeeAddress, city, budget, startTimeUnix, endTimeUnix);
         console.log('claim  added');
         alert('Claim Successful!')
-        window.location = 'index.html';
+        window.location = 'dashboard.html';
       }
 
       function setCategory(el) {
