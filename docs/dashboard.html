@@ -266,51 +266,6 @@
   <!--pie chart categories-->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-  <script type="text/javascript">
-  // Load google charts
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-
-  // Draw the chart and set the chart values
-  function drawChart() {
-    dataDailySalesChart = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-          [12, 17, 7, 17, 23, 18, 38, 12, 17, 7, 17, 23]
-        ]
-      };
-
-      optionsDailySalesChart = {
-        lineSmooth: Chartist.Interpolation.cardinal({
-          tension: 0
-        }),
-        low: 0,
-        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        chartPadding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-      }
-
-      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
-
-      md.startAnimationForLineChart(dailySalesChart);
-
-
-    var data = {
-      labels: ['Hotel', 'Restaurant', 'Travel'],
-      series: [20, 15, 40]
-    };
-    
-    var options = {      
-    };
-
-    new Chartist.Pie('#piechart', data, options);
-  }
-  </script>
-
   <!--web3-apps-->
   <script src="assets/js/web3-app.js"></script>
   <script src="assets/js/events.js"></script>
@@ -343,11 +298,75 @@
     }
 
     function updateTransfersStats(transfers) {
-      transfers = transfers.map(transfer => transfer['args']['amount'])
-      console.log('updateTransfers', transfers)
-      sum = transfers.reduce((total, num) => total + num);
+      const _transfers = transfers.map(transfer => transfer['event']['args']['amount'])
+      console.log('updateTransfers', _transfers)
+      sum = _transfers.reduce((total, num) => total + num);
       console.log('sum', sum)
       document.getElementById('spent_amount').textContent = formatPrice(sum)
+    }
+
+    function updateLineChart(claims) {
+      console.log('claims', claims)
+      const claimsByMonth = {};
+
+      dataDailySalesChart = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+      };
+
+
+      claims.forEach(item => {
+        const startTime = item['args']['startTime']
+        const month = moment.unix(startTime).format('M') - 1
+        dataDailySalesChart.series[0][month] = dataDailySalesChart.series[0][month] + parseInt(item['args']['budget'])
+      })        
+
+      console.log(dataDailySalesChart)
+      
+      max = Math.max(...dataDailySalesChart.series[0]) + 1000
+
+      optionsDailySalesChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: max, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 10
+        },
+      }
+
+      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+      md.startAnimationForLineChart(dailySalesChart);
+    }
+
+    function updatePieChart(transfers) {      
+      transfersByGroup = {};
+      transfers.forEach(item => {
+        group = item['serviceProvider'][2]
+        transfersByGroup[group] = transfersByGroup[group] || [];
+        transfersByGroup[group].push(item['event'])
+      })
+      var data = {
+        labels: [],
+        series: []
+      };
+      for (group in transfersByGroup) {
+        data.labels.push(group)
+        data.series.push(transfersByGroup[group].length)
+      }
+      
+      
+      var options = {      
+      };
+
+      new Chartist.Pie('#piechart', data, options);
     }
 
       async function onWeb3Initialized(){
@@ -397,17 +416,20 @@
           ]
           appendRow(table, row)          
           updateClaimsStats(claims)
+          updateLineChart(claims)
         })
 
         Events.listenTransfer(App.account, async function (event) {
           console.log('transfer ', event)
-          transfers.push(event)
+          
           const table = document.getElementById('table_transfers')
           const args = event['args']
-                    
+
           serviceProvider = await App.allServiceProviders(args['serviceProvider'])          
           serviceProviderName = serviceProvider[1]
           city = serviceProvider[2]          
+
+          transfers.push({event: event, serviceProvider: serviceProvider})
 
           const employee = await App.allEmployees(args['employeeAddress'])
           row = [
@@ -419,6 +441,7 @@
           ]
           appendRow(table, row)
           updateTransfersStats(transfers)
+          updatePieChart(transfers)
         })
       }
 
