@@ -3,7 +3,7 @@
 
 App = {
   account: '',
-  address: '0x73b6d2aed074ea16218a72059241420d9e14c0e7',
+  address: '0xc140f39d6ce3c5b121d10994596d647a4552a340',
   contract: '',
   options: {
     from: this.account
