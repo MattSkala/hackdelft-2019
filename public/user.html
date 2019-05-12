@@ -85,12 +85,7 @@
                         <button type="submit" class="btn btn-primary pull-right" onClick="pay(); return false">Pay</button>
                         <div class="clearfix"></div>
                       </form>
-                      </div>
-                      <div class="card-footer">
-                        <div class="stats">
-                          <i class="material-icons">access_time</i> updated 4 minutes ago
-                        </div>
-                      </div>
+                      </div>                      
                     </div>
                   </div>
             </div>
@@ -179,7 +174,11 @@
 
       let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
       scanner.addListener('scan', function (content) {
-        alert(content);
+        parts = content.split(':')        
+        if (parts.length == 2) {
+          address = parts[1]
+          document.getElementById('address').value = address
+        }
       });
 
       Instascan.Camera.getCameras().then(function (cameras) {
@@ -191,6 +190,16 @@
       }).catch(function (e) {
         console.error(e);
       });
+
+      async function pay() {
+        const address = document.getElementById('address').value;
+        const amount = eth_to_wei(document.getElementById('amount').value);
+        console.log(address, amount);
+        await App.payServiceProvider(address, amount);
+        console.log('payment successful');
+        alert('Payment Successful!')
+        window.location = 'user.html';
+      }
   </script>
 
 </body>
