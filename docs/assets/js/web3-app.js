@@ -3,7 +3,7 @@
 
 App = {
   account: '',
-  address: '0xd180729f264c6294dde9b8b73b81a53cc8afdb70',
+  address: '0x73b6d2aed074ea16218a72059241420d9e14c0e7',
   contract: '',
   options: {
     from: this.account
@@ -23,7 +23,7 @@ App = {
     return App.init_contract(run);
   },
 
-  get_balance: function(cb) {    
+  get_balance: function(cb) {
     web3.eth.getBalance(App.account, cb)
   },
 
