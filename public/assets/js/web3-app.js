@@ -9,7 +9,7 @@ App = {
     from: this.account
   },
 
-  init: function(run) {
+  init: async function(run) {
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
       web3Provider = web3.currentProvider;
@@ -19,7 +19,7 @@ App = {
       console.log("Metamask Unavailable");
       return;
     }
-    ethereum.enable();
+    await ethereum.enable();
     return App.init_contract(run);
   },
 
