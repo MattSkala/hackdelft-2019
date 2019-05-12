@@ -14,6 +14,29 @@
   <link href="assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
 </head>
 
+
+<script>
+  //pie
+  var ctxP = document.getElementById("pieChart").getContext('2d');
+  var myPieChart = new Chart(ctxP, {
+    type: 'pie',
+    data: {
+      labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
+      datasets: [{
+        data: [300, 50, 100, 40, 120],
+        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+ </script>
+
+
+
 <body>
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white">
@@ -171,7 +194,10 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                </div>
+                <div class="col-md-5">
+                    <canvas id="pieChart"></canvas>
+                </div>
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -249,6 +275,7 @@
   <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
+  
   <!--web3-apps-->
   <script src="assets/js/web3-app.js"></script>
   <script src="assets/js/events.js"></script>
