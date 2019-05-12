@@ -313,7 +313,7 @@
           args = claim['args']
           row = [
             args['employeeAddress'], 
-            args['budget']['c'][0], 
+            formatPrice(args['budget']['c'][0]), 
             args['city'], 
             moment.unix(args['startTime']['c'][0]).format('LL'), 
             moment.unix(args['endTime']['c'][0]).format('LL')

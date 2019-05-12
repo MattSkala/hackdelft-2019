@@ -228,7 +228,7 @@
         const address = App.account;
         const employeeAddress = document.getElementById('name').value;
         const city = document.getElementById('city').value;
-        const budget = document.getElementById('budget').value;        
+        const budget = eth_to_wei(document.getElementById('budget').value);        
         startTime = startTime.unix()
         endTime = endTime.unix()
         console.log(employeeAddress, city, budget, startTime, endTime);        
