@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Hello, world!</title>
+  <title>SpendWise</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -357,8 +357,12 @@
         claims = []
         transfers = []
 
-        Events.listenClaim(App.account, async function (claim) {
+        Events.listenClaim(App.account, async function (claim) {          
           console.log('claim', claim)
+          if (claims.filter(item => item['blockHash'] == claim['blockHash']).length > 0) {
+            console.log('claim already present')
+            return
+          }
           claims.push(claim)
           const table = document.getElementById('table_claims')
           const args = claim['args']

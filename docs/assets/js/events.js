@@ -38,7 +38,7 @@ Events = {
      if (!error){
        console.log("Claim Event:");
        console.log(result);
-       run(result);
+       run(result);       
      }
     });
   },
