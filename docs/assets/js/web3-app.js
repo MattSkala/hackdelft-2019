@@ -24,7 +24,7 @@ App = {
   },
 
   get_balance: function(cb) {
-    web3.eth.getBalance(App.account, cb)
+    web3.eth.getBalance(App.account, cb);
   },
 
   init_contract: function(run) {
@@ -97,13 +97,13 @@ promisify= (inner) =>
     );
 
 function wei_to_eth(wei) {
-  return wei / 1000000000000000000
+  return wei / 1000000000000000000;
 }
 
 function eth_to_wei(eth) {
-  return eth * 1000000000000000000
+  return eth * 1000000000000000000;
 }
 
 function formatPrice(wei) {
-  return 'Ξ' + wei
+  return 'Ξ' + wei;
 }
