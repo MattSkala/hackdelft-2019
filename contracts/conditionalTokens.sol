@@ -38,14 +38,14 @@ contract conditionalTokens {
     event transfer(address indexed companyAddress, address indexed employeeAddress, address serviceProvider, uint amount);
     event claim(address indexed companyAddress, address indexed employeeAddress, uint256 budget, string city, uint startTime, uint endTime);
     function addCompany(string memory name) public payable{
-        require(allCompanies[msg.sender].exists!=1);
+        //require(allCompanies[msg.sender].exists!=1);
         Company memory newCompany = Company(1, msg.value, name);
         allCompanies[msg.sender] = newCompany;
     }
 
     function addEmployee(address employeeAddress, string memory name, string memory homeCity) public{
         require(allCompanies[msg.sender].exists==1);
-        require(allEmployees[employeeAddress].exists!=1);
+        //require(allEmployees[employeeAddress].exists!=1);
         Employee memory newEmployee = Employee(1, name, homeCity, msg.sender);
         allEmployees[employeeAddress] = newEmployee;
         companyEmployees[msg.sender].push(employeeAddress);
@@ -57,7 +57,7 @@ contract conditionalTokens {
     }
 
     function addServiceProvider(string memory name, string memory location) public payable{
-        require(allServiceProviders[msg.sender].exists!=1);
+        //require(allServiceProviders[msg.sender].exists!=1);
         ServiceProvider memory newServiceProvider = ServiceProvider(1,name,location);
         allServiceProviders[msg.sender] = newServiceProvider;
     }
